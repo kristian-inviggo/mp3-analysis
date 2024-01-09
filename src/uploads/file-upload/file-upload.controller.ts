@@ -30,7 +30,7 @@ export class FileUploadController {
     file: Express.Multer.File,
     @Res() response: Response,
   ) {
-    const frameCount = this.mp3FrameCounterService.countFrames(file);
+    const frameCount = this.mp3FrameCounterService.countFrames(file.buffer);
 
     return response.status(HttpStatus.CREATED).json({ frameCount });
   }

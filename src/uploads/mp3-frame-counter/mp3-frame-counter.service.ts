@@ -35,12 +35,9 @@ export class Mp3FrameCounterService {
     return true;
   }
 
-  public countFrames(file: Express.Multer.File): number {
-    console.log(file);
-
+  public countFrames(buffer: Buffer): number {
     let frameCount = 0;
     let offset = 0;
-    const buffer = file.buffer;
 
     while (offset < buffer.length - 3) {
       if (
