@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { UploadsModule } from '../src/uploads/uploads.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [UploadsModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -17,8 +17,9 @@ describe('AppController (e2e)', () => {
 
   it('/ (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+      .post('/file-upload')
+      .attach('file', './test/fixtures/sample.mp3')
+      .expect(201)
+      .expect({ frameCount: 1792 });
   });
 });
