@@ -10,6 +10,7 @@ import {
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Mp3FrameCounterService } from '../mp3-frame-counter/mp3-frame-counter.service';
+import { FileUploadResponseDto } from '../interfaces/FileUploadResponse';
 
 @Controller('file-upload')
 export class FileUploadController {
@@ -28,10 +29,8 @@ export class FileUploadController {
         .build(),
     )
     file: Express.Multer.File,
-    @Res() response: Response,
-  ) {
+  ): FileUploadResponseDto {
     const frameCount = this.mp3FrameCounterService.countFrames(file.buffer);
-
-    return response.status(HttpStatus.CREATED).json({ frameCount });
+    return { frameCount };
   }
 }
