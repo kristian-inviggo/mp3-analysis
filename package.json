@@ -23,6 +23,9 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "crypto": "^1.0.1",
+    "mp3-header": "^0.1.4",
+    "mp3-parser": "^0.3.0",
     "music-metadata": "^7.14.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
