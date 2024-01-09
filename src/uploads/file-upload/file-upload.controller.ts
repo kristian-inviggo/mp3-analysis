@@ -4,10 +4,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
-  Res,
-  HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Mp3FrameCounterService } from '../mp3-frame-counter/mp3-frame-counter.service';
 import { FileUploadResponseDto } from '../interfaces/FileUploadResponse';
