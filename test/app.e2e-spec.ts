@@ -20,22 +20,22 @@ describe('FileUploadController (e2e)', () => {
   });
 
   describe('POST /file-upload', () => {
-    it('should return 201 CREATED and have the correct properties in the response body', () => {
-      request(app.getHttpServer())
+    it('should return 201 CREATED and have the correct properties in the response body', async () => {
+      const response = await request(app.getHttpServer())
         .post('/file-upload')
-        .attach('file', './test/fixtures/sample.mp3')
-        .expect(201)
-        .expect({ frameCount: 1792 });
+        .attach('file', './test/fixtures/sample.mp3');
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toEqual({ frameCount: 1792 });
     });
 
-    it('should return 400 BAD REQUEST for any other file types besides mp3', () => {
+    it('should return 400 BAD REQUEST for any other file types besides mp3', async () => {
       const fileNames: string[] = ['image.webp', 'cat.jpg'];
 
       for (const fileName of fileNames) {
-        request(app.getHttpServer())
+        const response = await request(app.getHttpServer())
           .post('/file-upload')
-          .attach('file', `./test/fixtures/${fileName}`)
-          .expect(400);
+          .attach('file', `./test/fixtures/${fileName}`);
+        expect(response.statusCode).toBe(400);
       }
     });
   });
