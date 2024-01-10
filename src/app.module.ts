@@ -1,19 +1,35 @@
 import { Module } from '@nestjs/common';
 import { UploadsModule } from './uploads/uploads.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { File } from './uploads/entities/file.entity';
+import { configuration } from './config/configuration';
+import { DatabaseEnvironment } from './config/interfaces/DatabaseEnvironment';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'mp3Analytics',
-      entities: [File],
-      synchronize: true,
+    ConfigModule.forRoot({
+      envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
+      load: [configuration],
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const databaseConfiguration =
+          configService.get<DatabaseEnvironment>('database')!;
+
+        return {
+          type: 'postgres',
+          host: databaseConfiguration.host,
+          port: databaseConfiguration.port,
+          username: databaseConfiguration.username,
+          password: databaseConfiguration.password,
+          database: databaseConfiguration.name,
+          entities: [File],
+          synchronize: true, //  TODO remove this for production purposes
+        };
+      },
     }),
     UploadsModule,
   ],
