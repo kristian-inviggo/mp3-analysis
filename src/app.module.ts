@@ -27,7 +27,7 @@ import { DatabaseEnvironment } from './config/interfaces/DatabaseEnvironment';
           password: databaseConfiguration.password,
           database: databaseConfiguration.name,
           entities: [File],
-          synchronize: true, //  TODO remove this for production purposes
+          synchronize: false, //  TODO remove this for production purposes
         };
       },
     }),

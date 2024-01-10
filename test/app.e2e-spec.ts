@@ -2,29 +2,22 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { GenericContainer } from 'testcontainers';
-import {
-  PostgreSqlContainer,
-  StartedPostgreSqlContainer,
-} from '@testcontainers/postgresql';
+import { PostgresTestContainer } from './helpers/postgres-testcontainer';
+import { ConfigService } from '@nestjs/config';
 
 describe('FileUploadController (e2e)', () => {
   let app: INestApplication;
-  let postgresContainer: StartedPostgreSqlContainer;
+  let postgresContainer = new PostgresTestContainer();
 
   beforeEach(async () => {
-    postgresContainer = await new PostgreSqlContainer('postgres:16-alpine')
-      .withDatabase('test')
-      .withUsername('postgres')
-      .withPassword('postgres')
-      .withExposedPorts(5433)
-      .start();
-
-    const mappedPort = postgresContainer.getMappedPort(5433);
+    await postgresContainer.init();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(ConfigService)
+      .useValue({})
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
