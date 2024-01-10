@@ -2,11 +2,26 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { GenericContainer } from 'testcontainers';
+import {
+  PostgreSqlContainer,
+  StartedPostgreSqlContainer,
+} from '@testcontainers/postgresql';
 
 describe('FileUploadController (e2e)', () => {
   let app: INestApplication;
+  let postgresContainer: StartedPostgreSqlContainer;
 
   beforeEach(async () => {
+    postgresContainer = await new PostgreSqlContainer('postgres:16-alpine')
+      .withDatabase('test')
+      .withUsername('postgres')
+      .withPassword('postgres')
+      .withExposedPorts(5433)
+      .start();
+
+    const mappedPort = postgresContainer.getMappedPort(5433);
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -17,6 +32,7 @@ describe('FileUploadController (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
+    await postgresContainer.stop();
   });
 
   describe('POST /file-upload', () => {
