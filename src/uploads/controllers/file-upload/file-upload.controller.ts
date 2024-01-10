@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Controller,
   ParseFilePipeBuilder,
   Post,
@@ -28,7 +27,7 @@ export class FileUploadController {
       type: 'object',
       properties: {
         file: {
-          type: 'string',
+          type: 'audio/mpeg',
           format: 'binary',
         },
       },

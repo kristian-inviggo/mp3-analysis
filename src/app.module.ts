@@ -5,6 +5,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { File } from './uploads/entities/file.entity';
 import { configuration } from './config/configuration';
 import { DatabaseEnvironment } from './config/interfaces/DatabaseEnvironment';
+import { LoggerModule } from 'nestjs-pino';
+const { v4: uuidv4 } = require('uuid');
 
 @Module({
   imports: [
@@ -12,6 +14,17 @@ import { DatabaseEnvironment } from './config/interfaces/DatabaseEnvironment';
       envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
       load: [configuration],
       isGlobal: true,
+    }),
+    LoggerModule.forRootAsync({
+      useFactory: async () => {
+        return {
+          pinoHttp: {
+            level: 'info',
+            genReqId: (request) =>
+              request.headers['x-correlation-id'] || uuidv4(),
+          },
+        };
+      },
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
