@@ -41,6 +41,7 @@
     "testcontainers": "^10.4.0",
     "ts-mockito": "^2.6.1",
     "typeorm": "^0.3.19",
+    "file-type-mime": "^0.3.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

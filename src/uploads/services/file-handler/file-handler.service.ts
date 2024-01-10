@@ -14,8 +14,7 @@ export class FileHandlerService {
     private filesRepository: Repository<File>,
   ) {}
 
-  // TODO rename method
-  async handleFile(buffer: Buffer): Promise<number> {
+  async validateAndGetMp3FileFrames(buffer: Buffer): Promise<number> {
     const hash = this.hashService.hash(buffer);
     const file = await this.filesRepository.findOneBy({ id: hash });
 

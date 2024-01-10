@@ -52,7 +52,8 @@ export class FileUploadController {
     )
     file: Express.Multer.File,
   ): Promise<FileUploadResponseDto> {
-    const frameCount = await this.fileHandlerService.handleFile(file.buffer);
+    const frameCount =
+      await this.fileHandlerService.validateAndGetMp3FileFrames(file.buffer);
     return { frameCount };
   }
 }
