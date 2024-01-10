@@ -6,18 +6,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Mp3FrameCounterService } from '../mp3-frame-counter/mp3-frame-counter.service';
-import { FileUploadResponseDto } from '../interfaces/FileUploadResponse';
+import { FileUploadResponseDto } from '../../interfaces/FileUploadResponse';
+import { FileHandlerService } from '../../services/file-handler/file-handler.service';
 
 @Controller('file-upload')
 export class FileUploadController {
-  constructor(
-    private readonly mp3FrameCounterService: Mp3FrameCounterService,
-  ) {}
+  constructor(private readonly fileHandlerService: FileHandlerService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(
+  async uploadFile(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
@@ -26,8 +24,8 @@ export class FileUploadController {
         .build(),
     )
     file: Express.Multer.File,
-  ): FileUploadResponseDto {
-    const frameCount = this.mp3FrameCounterService.countFrames(file.buffer);
+  ): Promise<FileUploadResponseDto> {
+    const frameCount = await this.fileHandlerService.handleFile(file.buffer);
     return { frameCount };
   }
 }
