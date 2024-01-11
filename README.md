@@ -12,6 +12,7 @@ The API exposes one endpoint `file-uploads` to return the number of frames in an
 - [Tests](#tests)
   - [Unit](#unit)
 - [Swagger](#swagger)
+- [Optimization](#optimization)
 
 ## Installation
 
@@ -66,3 +67,7 @@ $ npm run test:e2e
 
 Swagger can be accessed through `/docs` to view the API documentation.
 This works only in development mode
+
+## Optimization
+
+At the moment we need to parse the whole stream before we can evaluate the file, we can optimize this with overriding the express parser that waits for the stream. Esentially as soon as the stream arrives we can check the file so we don't have to iterate over it twice after we have received it.
