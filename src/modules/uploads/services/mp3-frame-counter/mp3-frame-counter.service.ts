@@ -3,12 +3,14 @@ import { Mp3FrameHeaderCalculatorService } from '../mp3-frame-header-calculator/
 
 @Injectable()
 export class Mp3FrameCounterService {
+  private readonly headerSize = 4;
+
   public countFrames(buffer: Buffer): number {
     let frameCount = 0;
     let offset = 0;
 
-    while (offset < buffer.length - 3) {
-      const header = buffer.subarray(offset, offset + 4);
+    while (offset < buffer.length - this.headerSize - 1) {
+      const header = buffer.subarray(offset, offset + this.headerSize);
       const mp3FrameHeader = new Mp3FrameHeaderCalculatorService(header);
 
       if (!mp3FrameHeader.isPotentialHeader()) {
