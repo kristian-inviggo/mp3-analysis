@@ -26,5 +26,6 @@ export const configuration = (): Environment => {
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
     },
+    logging: !!process.env.LOGGING,
   };
 };

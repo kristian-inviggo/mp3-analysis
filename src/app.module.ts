@@ -16,9 +16,11 @@ const { v4: uuidv4 } = require('uuid');
       isGlobal: true,
     }),
     LoggerModule.forRootAsync({
-      useFactory: async () => {
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
         return {
           pinoHttp: {
+            enabled: !!configService.get<boolean>('logging'),
             level: 'info',
             genReqId: (request) =>
               request.headers['x-correlation-id'] || uuidv4(),
