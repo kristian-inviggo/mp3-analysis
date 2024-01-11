@@ -1,6 +1,6 @@
 import { Mp3FrameHeader } from './mp3-frame-header.service';
 
-describe('Mp3FrameHeaderValidatorService', () => {
+describe('Mp3FrameHeaderService', () => {
   describe('isPotentialHeader', () => {
     it('should return true for a valid MP3 header', () => {
       const validHeader = Buffer.from([0xff, 0xfa, 0x00, 0x00]);
@@ -47,6 +47,7 @@ describe('Mp3FrameHeaderValidatorService', () => {
       it('for invalid MP3 frame header with incorrect version and layer', () => {
         const invalidHeader = Buffer.from([0xff, 0x00, 0x00, 0x00]);
         const service = new Mp3FrameHeader(invalidHeader);
+
         const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
       });

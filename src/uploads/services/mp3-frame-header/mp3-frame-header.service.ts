@@ -7,13 +7,6 @@ const channelModeBitsMask = 0x000000c0;
 const emphasisBitsMask = 0x00000003;
 const paddingBitMask = 0x00000200;
 
-const bitRatesForMp3Version1Layer3 = [
-  0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0,
-] as const;
-
-const sampleRateForMp3Version1Layer3 = 44.1;
-const bitsPerSampleForMp3Version1Layer3 = 144;
-
 const syncBitsOffset = 21;
 const versionBitsOffset = 19;
 const layerBitsOffset = 17;
@@ -118,20 +111,5 @@ export class Mp3FrameHeader {
     }
 
     return true;
-  }
-}
-
-export class Mp3FrameHeaderCalculator extends Mp3FrameHeader {
-  constructor(header: Buffer) {
-    super(header);
-  }
-  public calculateFrameSize(): number {
-    const bitrate = bitRatesForMp3Version1Layer3[this.bitrateBits];
-
-    return Math.floor(
-      (bitsPerSampleForMp3Version1Layer3 * bitrate) /
-        sampleRateForMp3Version1Layer3 +
-        this.paddingBit,
-    );
   }
 }
