@@ -6,6 +6,9 @@ import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { instance, mock } from 'ts-mockito';
 import { readFileSync } from 'fs';
 import { Readable } from 'stream';
+import { CacheService } from '../../../shared/cache/cache.service';
+import { CacheModule } from '@nestjs/cache-manager';
+import { UploadsModule } from '../../uploads.module';
 
 function readFile(fileName: string): Buffer {
   return readFileSync(`test/fixtures/${fileName}`);
@@ -16,8 +19,14 @@ describe('FileUploadController', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [CacheModule.register()],
       controllers: [FileUploadController],
-      providers: [FileHandlerService, Mp3FrameCounterService, HashFileService],
+      providers: [
+        FileHandlerService,
+        Mp3FrameCounterService,
+        HashFileService,
+        CacheService,
+      ],
     }).compile();
 
     controller = module.get<FileUploadController>(FileUploadController);
