@@ -3,8 +3,10 @@ import { HashFileService } from './services/hash-file/hash-file.service';
 import { FileHandlerService } from './services/file-handler/file-handler.service';
 import { FileUploadController } from './controllers/file-upload/file-upload.controller';
 import { Mp3FrameCounterService } from './services/mp3-frame-counter/mp3-frame-counter.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
+  imports: [SharedModule],
   controllers: [FileUploadController],
   providers: [Mp3FrameCounterService, HashFileService, FileHandlerService],
 })
