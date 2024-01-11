@@ -5,7 +5,7 @@ import { Inject, Injectable } from '@nestjs/common';
 export class CacheService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
-  public async setCache(key: string, value: string): Promise<void> {
+  public async setCache<T>(key: string, value: T): Promise<void> {
     await this.cacheManager.set(key, value);
   }
 
