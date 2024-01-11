@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UploadsModule } from './uploads/uploads.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configuration } from '../config/configuration';
 import { LoggerModule } from 'nestjs-pino';
