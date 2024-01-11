@@ -20,9 +20,9 @@ const validVersionBits = 0b11;
 const validLayerBits = 0b01;
 const bitrateMaxValue = 0b1111;
 const bitrateMinValue = 0b0000;
-const samplingRateBitsValidValues = [0b00, 0b01, 0b10] as const;
-const validChannelModeBits = [0b00, 0b01, 0b10, 0b11] as const;
-const validEmphasisBits = [0b00, 0b01, 0b10, 0b11] as const;
+const samplingRateBitsValidValues = [0b00, 0b01, 0b10];
+const validChannelModeBits = [0b00, 0b01, 0b10, 0b11];
+const validEmphasisBits = [0b00, 0b01, 0b10, 0b11];
 
 export class Mp3FrameHeaderService {
   private readonly header: number;
@@ -109,23 +109,17 @@ export class Mp3FrameHeaderService {
     }
 
     const sampleRateBits = this.samplingRateBits;
-    if (
-      !(samplingRateBitsValidValues as unknown as number[]).includes(
-        sampleRateBits,
-      )
-    ) {
+    if (!samplingRateBitsValidValues.includes(sampleRateBits)) {
       return false;
     }
 
     const channelModeBits = this.channelModeBits;
-    if (
-      !(validChannelModeBits as unknown as number[]).includes(channelModeBits)
-    ) {
+    if (!validChannelModeBits.includes(channelModeBits)) {
       return false;
     }
 
     const emphasisBits = this.emphasisBits;
-    if (!(validEmphasisBits as unknown as number[]).includes(emphasisBits)) {
+    if (!validEmphasisBits.includes(emphasisBits)) {
       return false;
     }
 
