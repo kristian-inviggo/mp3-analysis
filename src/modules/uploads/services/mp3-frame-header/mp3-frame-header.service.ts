@@ -63,18 +63,37 @@ export class Mp3FrameHeaderService {
     return (this.header & paddingBitMask) >>> paddingBitOffset;
   }
 
+  /**
+   * Verifies if the frame header is version 1 layer 3
+   * @function
+   * @returns {Boolean} returns true if version bits match to 1 and layer bits match to 01, otherwise false
+   */
   private isFileMp3Version1Layer3(): boolean {
     return (
       this.versionBits === validVersionBits && this.layerBits === validLayerBits
     );
   }
 
+  /**
+   * Verifies the first 15 bits of the header to see if there is a potential match.
+   * We count it as a potential match is the first 12 bits match the sync bits and the 13, 14, 15
+   * match to version 1 layer 3 as this is what we support for now
+   * @function
+   * @returns {Boolean} returns true if sync bits are present and the header matches version 1 layer 3, otherwise false
+   */
   public isPotentialHeader(): boolean {
     return (
       this.syncBits === validSyncBitsValue && this.isFileMp3Version1Layer3()
     );
   }
 
+  /**
+   * Verifies the complete header if it's a valid mp3 frame header.
+   * It verifies the existence of the sync word, the correct version and layer, the validness of the:
+   * bitrange, sample rate bits, channel mode bits and emphasis bits
+   * @function
+   * @returns {Boolean} returns true if this is a valid mp3 frame header
+   */
   public isValidMP3FrameHeader(): boolean {
     if (this.syncBits !== validSyncBitsValue) {
       return false;

@@ -16,6 +16,12 @@ export class Mp3FrameHeaderCalculatorService extends Mp3FrameHeaderService {
     return bitRatesForMp3Version1Layer3[this.bitrateBits];
   }
 
+  /**
+   * Calculates the frame size using the standard values for mp3 version 1 layer 3.
+   * @function
+   * @returns {Number} returns the calculated frame size in bytes
+   */
+
   public calculateFrameSize(): number {
     return Math.floor(
       (bitsPerSampleForMp3Version1Layer3 * this.bitrate) /
