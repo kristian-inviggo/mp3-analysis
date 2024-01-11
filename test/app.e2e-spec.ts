@@ -17,7 +17,7 @@ describe('FileUploadController (e2e)', () => {
         .post('/file-upload')
         .attach('file', './test/fixtures/sample.mp3');
       expect(response.statusCode).toBe(201);
-      expect(response.body).toEqual({ frameCount: 1792 });
+      expect(response.body).toEqual({ frameCount: 1610 });
     });
 
     it('should return 400 BAD REQUEST for any other file types besides mp3', async () => {

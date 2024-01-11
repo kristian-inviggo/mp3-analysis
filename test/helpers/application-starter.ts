@@ -10,6 +10,7 @@ import { instance, mock, when } from 'ts-mockito';
 import TestAgent from 'supertest/lib/agent';
 import * as path from 'path';
 import { DataSource } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 dotenv.config({
   path: path.resolve(__dirname, '../../src/config/env/e2e.env'),
@@ -50,19 +51,34 @@ export class ApplicationStarter {
     await this.postgresTestContainer.init(
       this.getDatabaseEnvironmentVariables(),
     );
-    await this.syncDatabase();
+    // await this.syncDatabase();
 
     const mockConfigService = mock(ConfigService);
 
-    when(mockConfigService.get('database')).thenReturn({
+    const dbConfig = {
       ...this.getDatabaseEnvironmentVariables(),
       port: this.postgresTestContainer.port,
-    });
+    };
+
+    when(mockConfigService.get('database')).thenReturn(dbConfig);
 
     when(mockConfigService.get('logging')).thenReturn(false);
+    when(mockConfigService.get('NODE_ENV')).thenReturn('test');
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        TypeOrmModule.forRoot({
+          type: 'postgres',
+          host: dbConfig.host,
+          port: dbConfig.port,
+          username: dbConfig.username,
+          password: dbConfig.password,
+          database: dbConfig.name,
+          entities: [File],
+          synchronize: true,
+        }),
+        AppModule,
+      ],
     })
       .overrideProvider(ConfigService)
       .useValue(instance(mockConfigService))
@@ -74,7 +90,7 @@ export class ApplicationStarter {
 
   public async stop(): Promise<void> {
     await this.app.close();
-    await this.dataSource.destroy();
+    // await this.dataSource.destroy();
     await this.postgresTestContainer.stop();
   }
 
