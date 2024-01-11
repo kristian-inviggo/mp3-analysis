@@ -16,7 +16,7 @@ dotenv.config({
   path: path.resolve(__dirname, '../../src/config/env/e2e.env'),
 });
 
-export class ApplicationStarter {
+export class TestApplicationStarter {
   private readonly postgresTestContainer = new PostgresTestContainer();
   private app: INestApplication;
   private dataSource: DataSource;
@@ -31,28 +31,10 @@ export class ApplicationStarter {
     };
   }
 
-  private async syncDatabase(): Promise<void> {
-    const dbConfig = this.getDatabaseEnvironmentVariables();
-    this.dataSource = new DataSource({
-      type: 'postgres',
-      host: dbConfig.host,
-      port: this.postgresTestContainer.port,
-      username: dbConfig.username,
-      password: dbConfig.password,
-      database: dbConfig.name,
-      synchronize: true,
-      entities: [File],
-    });
-
-    await (await this.dataSource.initialize()).synchronize();
-  }
-
   public async init(): Promise<void> {
     await this.postgresTestContainer.init(
       this.getDatabaseEnvironmentVariables(),
     );
-    // await this.syncDatabase();
-
     const mockConfigService = mock(ConfigService);
 
     const dbConfig = {
@@ -90,7 +72,6 @@ export class ApplicationStarter {
 
   public async stop(): Promise<void> {
     await this.app.close();
-    // await this.dataSource.destroy();
     await this.postgresTestContainer.stop();
   }
 

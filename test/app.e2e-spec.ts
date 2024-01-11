@@ -1,14 +1,14 @@
-import { ApplicationStarter } from './helpers/application-starter';
+import { TestApplicationStarter } from './helpers/test-application-starter';
 
 describe('FileUploadController (e2e)', () => {
-  const app = new ApplicationStarter();
+  const app = new TestApplicationStarter();
 
   beforeAll(async () => {
     await app.init();
   });
 
   afterAll(async () => {
-    // await app.stop();
+    await app.stop();
   });
 
   describe('POST /file-upload', () => {

@@ -34,7 +34,6 @@ const { v4: uuidv4 } = require('uuid');
         const databaseConfiguration =
           configService.get<DatabaseEnvironment>('database')!;
 
-        const synchronize = configService.get<string>('NODE_ENV') === 'test';
         return {
           type: 'postgres',
           host: databaseConfiguration.host,
@@ -42,7 +41,7 @@ const { v4: uuidv4 } = require('uuid');
           username: databaseConfiguration.username,
           password: databaseConfiguration.password,
           database: databaseConfiguration.name,
-          synchronize,
+          synchronize: true, // this should be turned off for production, but since we don't have migrations yet it's turned on so we don't have to worry about database sync
           autoLoadEntities: true,
         };
       },
