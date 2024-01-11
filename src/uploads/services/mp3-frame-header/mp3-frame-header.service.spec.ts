@@ -1,33 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { Mp3FrameHeaderValidatorService } from './mp3-frame-header-validator.service';
+import { Mp3FrameHeader } from './mp3-frame-header.service';
 
 describe('Mp3FrameHeaderValidatorService', () => {
-  let service: Mp3FrameHeaderValidatorService;
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [Mp3FrameHeaderValidatorService],
-    }).compile();
-
-    service = module.get<Mp3FrameHeaderValidatorService>(
-      Mp3FrameHeaderValidatorService,
-    );
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
   describe('isPotentialHeader', () => {
     it('should return true for a valid MP3 header', () => {
-      const validHeader = Buffer.from([0xff, 0xe1, 0x00, 0x00]);
-      const result = service.isPotentialHeader(validHeader);
+      const validHeader = Buffer.from([0xff, 0xfa, 0x00, 0x00]);
+      const service = new Mp3FrameHeader(validHeader);
+
+      const result = service.isPotentialHeader();
       expect(result).toBe(true);
     });
 
     it('should return false for an invalid MP3 header', () => {
       const invalidHeader = Buffer.from([0x00, 0xff, 0x00, 0x00]);
-      const result = service.isPotentialHeader(invalidHeader);
+      const service = new Mp3FrameHeader(invalidHeader);
+
+      const result = service.isPotentialHeader();
       expect(result).toBe(false);
     });
   });
@@ -41,7 +28,8 @@ describe('Mp3FrameHeaderValidatorService', () => {
         ];
 
         validHeaders.forEach((header) => {
-          const result = service.isValidMP3FrameHeader(header);
+          const service = new Mp3FrameHeader(header);
+          const result = service.isValidMP3FrameHeader();
           expect(result).toBe(true);
         });
       });
@@ -50,13 +38,16 @@ describe('Mp3FrameHeaderValidatorService', () => {
     describe('should return false for invalid header', () => {
       it('for invalid MP3 frame header with incorrect sync bits', () => {
         const invalidHeader = Buffer.from([0x00, 0xff, 0x00, 0x00]);
-        const result = service.isValidMP3FrameHeader(invalidHeader);
+        const service = new Mp3FrameHeader(invalidHeader);
+
+        const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
       });
 
       it('for invalid MP3 frame header with incorrect version and layer', () => {
         const invalidHeader = Buffer.from([0xff, 0x00, 0x00, 0x00]);
-        const result = service.isValidMP3FrameHeader(invalidHeader);
+        const service = new Mp3FrameHeader(invalidHeader);
+        const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
       });
 
@@ -67,29 +58,33 @@ describe('Mp3FrameHeaderValidatorService', () => {
         ];
 
         headers.forEach((header) => {
-          const result = service.isValidMP3FrameHeader(header);
+          const service = new Mp3FrameHeader(header);
+          const result = service.isValidMP3FrameHeader();
           expect(result).toBe(false);
         });
       });
 
       it('for invalid MP3 frame header with incorrect frequency (sample rate)', () => {
         const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
+        const service = new Mp3FrameHeader(header);
 
-        const result = service.isValidMP3FrameHeader(header);
+        const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
       });
 
       it('for invalid MP3 frame header with incorrect channel mode', () => {
         const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
+        const service = new Mp3FrameHeader(header);
 
-        const result = service.isValidMP3FrameHeader(header);
+        const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
       });
 
       it('for invalid MP3 frame header with incorrect emphasis', () => {
         const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
+        const service = new Mp3FrameHeader(header);
 
-        const result = service.isValidMP3FrameHeader(header);
+        const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
       });
     });

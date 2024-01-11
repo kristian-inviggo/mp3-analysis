@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FileHandlerService } from './file-handler.service';
 import { Mp3FrameCounterService } from '../mp3-frame-counter/mp3-frame-counter.service';
 import { HashFileService } from '../hash-file/hash-file.service';
-import { Mp3FrameHeaderValidatorService } from '../mp3-frame-header-validator/mp3-frame-header-validator.service';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 import { Repository } from 'typeorm';
 import { File } from '../../entities/file.entity';
@@ -24,7 +23,6 @@ describe('FileHandlerService', () => {
         FileHandlerService,
         Mp3FrameCounterService,
         HashFileService,
-        Mp3FrameHeaderValidatorService,
         {
           provide: getRepositoryToken(File),
           useValue: instance(mockFileRepositpory),
@@ -51,7 +49,7 @@ describe('FileHandlerService', () => {
 
       const result = await service.validateAndGetMp3FileFrames(validFile);
 
-      expect(result).toEqual(1792);
+      expect(result).toEqual(1610);
       verify(mockFileRepositpory.save(anything())).once();
     });
 

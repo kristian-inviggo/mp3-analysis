@@ -3,7 +3,6 @@ import { FileUploadController } from './file-upload.controller';
 import { FileHandlerService } from '../../services/file-handler/file-handler.service';
 import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
 import { HashFileService } from '../../services/hash-file/hash-file.service';
-import { Mp3FrameHeaderValidatorService } from '../../services/mp3-frame-header-validator/mp3-frame-header-validator.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 import { Repository } from 'typeorm';
@@ -25,7 +24,6 @@ describe('FileUploadController', () => {
         FileHandlerService,
         Mp3FrameCounterService,
         HashFileService,
-        Mp3FrameHeaderValidatorService,
         {
           provide: getRepositoryToken(File),
           useValue: instance(mockFileRepositpory),
@@ -64,7 +62,7 @@ describe('FileUploadController', () => {
         buffer: validFile,
       });
 
-      expect(result).toEqual({ frameCount: 1792 });
+      expect(result).toEqual({ frameCount: 1610 });
 
       verify(mockFileRepositpory.save(anything())).once();
     });

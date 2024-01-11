@@ -1,31 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { Mp3FrameHeaderValidatorService } from '../mp3-frame-header-validator/mp3-frame-header-validator.service';
+import { Mp3FrameHeaderCalculator } from '../mp3-frame-header/mp3-frame-header.service';
 
 @Injectable()
 export class Mp3FrameCounterService {
-  constructor(
-    private readonly mp3FrameHeaderValidator: Mp3FrameHeaderValidatorService,
-  ) {}
-
   public countFrames(buffer: Buffer): number {
     let frameCount = 0;
     let offset = 0;
 
     while (offset < buffer.length - 3) {
       const header = buffer.subarray(offset, offset + 4);
+      const mp3FrameHeader = new Mp3FrameHeaderCalculator(header);
 
-      if (!this.mp3FrameHeaderValidator.isPotentialHeader(header)) {
+      if (!mp3FrameHeader.isPotentialHeader()) {
         offset++;
         continue;
       }
 
-      if (this.mp3FrameHeaderValidator.isValidMP3FrameHeader(header)) {
-        /*  once we found the header, we could calculate 
-            the frame size and skip the raw audio data 
-            to optimize the performance for bigger files
-        */
+      if (mp3FrameHeader.isValidMP3FrameHeader()) {
+        const frameSize = mp3FrameHeader.calculateFrameSize();
+
         frameCount++;
-        offset += 4;
+        offset += frameSize - 3;
       } else {
         offset++;
       }
