@@ -24,7 +24,9 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) framework TypeScript application for mp3 frame counting.
+
+You can check out the assignment in `docs/Techical Task.pdf`
 
 ## Installation
 
@@ -34,29 +36,55 @@ $ npm install
 
 ## Running the app
 
+### Developmment
+
+Before you start the application you need to make sure you have a running docker container for postgresql.
+You can do this with running `npm run docker` or with running `docker compose up -d`.
+
+Note that these commands are relying on docker compose version 2.
+
 ```bash
 # development
 $ npm run start
 
 # watch mode
 $ npm run start:dev
+```
 
-# production mode
+### Production
+
+You can start the application in production mode with
+
+```bash
 $ npm run start:prod
 ```
 
-## Test
+You need to make sure that the migrations for the databse have been executed before this. This should be handled with CI/CD. (No migrations are included yet in this example project)
+
+## Unit tests
+
+Unit tests can be runned with
 
 ```bash
-# unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
+
+Note: Unit tests mock the repositories so they don't require starting up a real database
+
+## E2E tests
+
+e2e tests can be runned with
+
+```bash
+$ npm run test:e2e
+```
+
+e2e tests rely on testcontainers so the tests are independent for each test. `This is still not implemented, e2e tests do not work at the moment`
+
+## Swagger
+
+Swagger can be accessed through `localhost:3000/docs` to view the API documentation.
+This works only in development mode
 
 ## Support
 

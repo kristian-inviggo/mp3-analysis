@@ -7,8 +7,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "build:prod": "nest build --prod",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "docker": "docker compose up -d",
+    "docker": "docker compose -f docker-compose.db.yml up -d",
     "start": "nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch -- -b swc",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",

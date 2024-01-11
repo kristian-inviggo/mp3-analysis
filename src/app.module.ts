@@ -40,7 +40,7 @@ const { v4: uuidv4 } = require('uuid');
           password: databaseConfiguration.password,
           database: databaseConfiguration.name,
           entities: [File],
-          synchronize: false, //  TODO remove this for production purposes
+          synchronize: true, // this should be false for production, we should use migrations instead
         };
       },
     }),
