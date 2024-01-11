@@ -3,6 +3,7 @@ import { UploadsModule } from './uploads/uploads.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configuration } from '../config/configuration';
 import { LoggerModule } from 'nestjs-pino';
+import { HealthModule } from './health/health.module';
 const { v4: uuidv4 } = require('uuid');
 
 @Module({
@@ -26,6 +27,7 @@ const { v4: uuidv4 } = require('uuid');
       },
     }),
     UploadsModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
