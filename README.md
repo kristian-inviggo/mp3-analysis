@@ -23,10 +23,7 @@ $ npm install
 
 ### Developmment
 
-Before you start the application you need to make sure you have a running docker container for postgresql.
-You can do this with running `npm run docker` or with running `docker compose -f docker-compose.db.yml up -d`.
-
-Note that these commands are relying on docker compose version 2.
+You can start the app in development with either of the commands below
 
 ```bash
 # development

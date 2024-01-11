@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UploadsModule } from './uploads/uploads.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { File } from './uploads/entities/file.entity';
 import { configuration } from '../config/configuration';
-import { DatabaseEnvironment } from '../config/interfaces/DatabaseEnvironment';
 import { LoggerModule } from 'nestjs-pino';
 const { v4: uuidv4 } = require('uuid');
 
@@ -25,24 +22,6 @@ const { v4: uuidv4 } = require('uuid');
             genReqId: (request) =>
               request.headers['x-correlation-id'] || uuidv4(),
           },
-        };
-      },
-    }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const databaseConfiguration =
-          configService.get<DatabaseEnvironment>('database')!;
-
-        return {
-          type: 'postgres',
-          host: databaseConfiguration.host,
-          port: databaseConfiguration.port,
-          username: databaseConfiguration.username,
-          password: databaseConfiguration.password,
-          database: databaseConfiguration.name,
-          synchronize: true, // this should be turned off for production, but since we don't have migrations yet it's turned on so we don't have to worry about database sync
-          autoLoadEntities: true,
         };
       },
     }),
