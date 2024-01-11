@@ -78,6 +78,20 @@ describe('Mp3FrameHeaderValidatorService', () => {
         const result = service.isValidMP3FrameHeader(header);
         expect(result).toBe(false);
       });
+
+      it('for invalid MP3 frame header with incorrect channel mode', () => {
+        const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
+
+        const result = service.isValidMP3FrameHeader(header);
+        expect(result).toBe(false);
+      });
+
+      it('for invalid MP3 frame header with incorrect emphasis', () => {
+        const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
+
+        const result = service.isValidMP3FrameHeader(header);
+        expect(result).toBe(false);
+      });
     });
   });
 });

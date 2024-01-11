@@ -20,6 +20,10 @@ export class Mp3FrameCounterService {
       }
 
       if (this.mp3FrameHeaderValidator.isValidMP3FrameHeader(header)) {
+        /*  once we found the header, we could calculate 
+            the frame size and skip the raw audio data 
+            to optimize the performance for bigger files
+        */
         frameCount++;
         offset += 4;
       } else {
