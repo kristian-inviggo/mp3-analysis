@@ -53,13 +53,14 @@ $ npm run start:dev
 
 ### Production
 
+For production please create `src/config/env/production.env` based on the .env's for the rest of the environments
 You can start the application in production mode with
 
 ```bash
 $ npm run start:prod
 ```
 
-You need to make sure that the migrations for the databse have been executed before this. This should be handled with CI/CD. (No migrations are included yet in this example project)
+You need to make sure that the migrations for the databse have been executed before this. This should be handled with CI/CD. (No migrations are included yet in this example project).
 
 ## Unit tests
 

@@ -1,10 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mp3FrameCounterService } from './mp3-frame-counter.service';
 import * as fs from 'fs';
-import * as m from 'music-metadata';
 import { Mp3FrameHeaderValidatorService } from '../mp3-frame-header-validator/mp3-frame-header-validator.service';
-const mp3Parser = require('mp3-parser');
-const XingHeader = require('mp3-header').XingHeader;
 
 describe('Mp3FrameCounterService', () => {
   let service: Mp3FrameCounterService;
