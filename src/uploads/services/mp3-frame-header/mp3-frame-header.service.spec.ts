@@ -1,10 +1,10 @@
-import { Mp3FrameHeader } from './mp3-frame-header.service';
+import { Mp3FrameHeaderService } from './mp3-frame-header.service';
 
 describe('Mp3FrameHeaderService', () => {
   describe('isPotentialHeader', () => {
     it('should return true for a valid MP3 header', () => {
       const validHeader = Buffer.from([0xff, 0xfa, 0x00, 0x00]);
-      const service = new Mp3FrameHeader(validHeader);
+      const service = new Mp3FrameHeaderService(validHeader);
 
       const result = service.isPotentialHeader();
       expect(result).toBe(true);
@@ -12,7 +12,7 @@ describe('Mp3FrameHeaderService', () => {
 
     it('should return false for an invalid MP3 header', () => {
       const invalidHeader = Buffer.from([0x00, 0xff, 0x00, 0x00]);
-      const service = new Mp3FrameHeader(invalidHeader);
+      const service = new Mp3FrameHeaderService(invalidHeader);
 
       const result = service.isPotentialHeader();
       expect(result).toBe(false);
@@ -28,7 +28,7 @@ describe('Mp3FrameHeaderService', () => {
         ];
 
         validHeaders.forEach((header) => {
-          const service = new Mp3FrameHeader(header);
+          const service = new Mp3FrameHeaderService(header);
           const result = service.isValidMP3FrameHeader();
           expect(result).toBe(true);
         });
@@ -38,7 +38,7 @@ describe('Mp3FrameHeaderService', () => {
     describe('should return false for invalid header', () => {
       it('for invalid MP3 frame header with incorrect sync bits', () => {
         const invalidHeader = Buffer.from([0x00, 0xff, 0x00, 0x00]);
-        const service = new Mp3FrameHeader(invalidHeader);
+        const service = new Mp3FrameHeaderService(invalidHeader);
 
         const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
@@ -46,7 +46,7 @@ describe('Mp3FrameHeaderService', () => {
 
       it('for invalid MP3 frame header with incorrect version and layer', () => {
         const invalidHeader = Buffer.from([0xff, 0x00, 0x00, 0x00]);
-        const service = new Mp3FrameHeader(invalidHeader);
+        const service = new Mp3FrameHeaderService(invalidHeader);
 
         const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
@@ -59,7 +59,7 @@ describe('Mp3FrameHeaderService', () => {
         ];
 
         headers.forEach((header) => {
-          const service = new Mp3FrameHeader(header);
+          const service = new Mp3FrameHeaderService(header);
           const result = service.isValidMP3FrameHeader();
           expect(result).toBe(false);
         });
@@ -67,7 +67,7 @@ describe('Mp3FrameHeaderService', () => {
 
       it('for invalid MP3 frame header with incorrect frequency (sample rate)', () => {
         const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
-        const service = new Mp3FrameHeader(header);
+        const service = new Mp3FrameHeaderService(header);
 
         const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
@@ -75,7 +75,7 @@ describe('Mp3FrameHeaderService', () => {
 
       it('for invalid MP3 frame header with incorrect channel mode', () => {
         const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
-        const service = new Mp3FrameHeader(header);
+        const service = new Mp3FrameHeaderService(header);
 
         const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);
@@ -83,7 +83,7 @@ describe('Mp3FrameHeaderService', () => {
 
       it('for invalid MP3 frame header with incorrect emphasis', () => {
         const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
-        const service = new Mp3FrameHeader(header);
+        const service = new Mp3FrameHeaderService(header);
 
         const result = service.isValidMP3FrameHeader();
         expect(result).toBe(false);

@@ -24,7 +24,7 @@ const samplingRateBitsValidValues = [0b00, 0b01, 0b10] as const;
 const validChannelModeBits = [0b00, 0b01, 0b10, 0b11] as const;
 const validEmphasisBits = [0b00, 0b01, 0b10, 0b11] as const;
 
-export class Mp3FrameHeader {
+export class Mp3FrameHeaderService {
   private readonly header: number;
 
   constructor(header: Buffer) {

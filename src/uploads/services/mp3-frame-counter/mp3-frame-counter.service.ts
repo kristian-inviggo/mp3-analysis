@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Mp3FrameHeaderCalculator } from '../mp3-frame-header/mp3-frame-header.service';
+import { Mp3FrameHeaderCalculatorService } from '../mp3-frame-header-calculator/mp3-frame-header-calculator.service';
 
 @Injectable()
 export class Mp3FrameCounterService {
@@ -9,7 +9,7 @@ export class Mp3FrameCounterService {
 
     while (offset < buffer.length - 3) {
       const header = buffer.subarray(offset, offset + 4);
-      const mp3FrameHeader = new Mp3FrameHeaderCalculator(header);
+      const mp3FrameHeader = new Mp3FrameHeaderCalculatorService(header);
 
       if (!mp3FrameHeader.isPotentialHeader()) {
         offset++;
@@ -20,7 +20,7 @@ export class Mp3FrameCounterService {
         const frameSize = mp3FrameHeader.calculateFrameSize();
 
         frameCount++;
-        offset += frameSize - 3;
+        offset += frameSize - 3; // It's suggested that we always check the previous 3 or 4 bytes in case our calculation is off
       } else {
         offset++;
       }
