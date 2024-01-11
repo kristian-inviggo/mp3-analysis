@@ -5,7 +5,6 @@ import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
-  app.setGlobalPrefix('api/v1');
 
   if (process.env.NODE_ENV !== 'production') {
     swaggerInitializer(app);
