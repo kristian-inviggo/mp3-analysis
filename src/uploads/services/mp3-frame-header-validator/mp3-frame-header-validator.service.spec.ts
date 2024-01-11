@@ -35,9 +35,15 @@ describe('Mp3FrameHeaderValidatorService', () => {
   describe('isValidMP3FrameHeader', () => {
     describe('should return true for valid header', () => {
       it('for a valid MP3 frame header', () => {
-        const validHeader = Buffer.from([0xff, 0xfa, 0xa0, 0x00]);
-        const result = service.isValidMP3FrameHeader(validHeader);
-        expect(result).toBe(true);
+        const validHeaders: Buffer[] = [
+          Buffer.from([0xff, 0xfa, 0xa0, 0x00]),
+          Buffer.from([0xff, 0xfa, 0xa4, 0x41]),
+        ];
+
+        validHeaders.forEach((header) => {
+          const result = service.isValidMP3FrameHeader(header);
+          expect(result).toBe(true);
+        });
       });
     });
 
@@ -49,8 +55,27 @@ describe('Mp3FrameHeaderValidatorService', () => {
       });
 
       it('for invalid MP3 frame header with incorrect version and layer', () => {
-        const invalidHeader = Buffer.from([0xff, 0xff, 0x00, 0x00]);
+        const invalidHeader = Buffer.from([0xff, 0x00, 0x00, 0x00]);
         const result = service.isValidMP3FrameHeader(invalidHeader);
+        expect(result).toBe(false);
+      });
+
+      it('for invalid MP3 frame header with incorrect bitrate', () => {
+        const headers: Buffer[] = [
+          Buffer.from([0xff, 0xfa, 0xf0, 0x00]),
+          Buffer.from([0xff, 0xfa, 0x00, 0x00]),
+        ];
+
+        headers.forEach((header) => {
+          const result = service.isValidMP3FrameHeader(header);
+          expect(result).toBe(false);
+        });
+      });
+
+      it('for invalid MP3 frame header with incorrect frequency (sample rate)', () => {
+        const header = Buffer.from([0xff, 0xfa, 0xfc, 0x00]);
+
+        const result = service.isValidMP3FrameHeader(header);
         expect(result).toBe(false);
       });
     });
