@@ -72,16 +72,6 @@ $ npm run test
 
 Note: Unit tests mock the repositories so they don't require starting up a real database
 
-## E2E tests
-
-e2e tests can be runned with
-
-```bash
-$ npm run test:e2e
-```
-
-e2e tests rely on testcontainers so the tests are independent for each test. `This is still not implemented, e2e tests do not work at the moment`
-
 ## Swagger
 
 Swagger can be accessed through `localhost:3000/docs` to view the API documentation.
