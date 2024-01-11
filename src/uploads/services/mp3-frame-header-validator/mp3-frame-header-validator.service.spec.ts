@@ -35,7 +35,7 @@ describe('Mp3FrameHeaderValidatorService', () => {
   describe('isValidMP3FrameHeader', () => {
     describe('should return true for valid header', () => {
       it('for a valid MP3 frame header', () => {
-        const validHeader = Buffer.from([0xff, 0xe1, 0x00, 0x00]);
+        const validHeader = Buffer.from([0xff, 0xfa, 0xa0, 0x00]);
         const result = service.isValidMP3FrameHeader(validHeader);
         expect(result).toBe(true);
       });

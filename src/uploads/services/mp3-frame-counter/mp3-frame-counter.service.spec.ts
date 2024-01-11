@@ -26,27 +26,4 @@ describe('Mp3FrameCounterService', () => {
       service.countFrames(fs.readFileSync('./test/fixtures/sample.mp3')),
     ).toBe(1792);
   });
-
-  // it.skip('See the metadata from a library to compare it', async () => {
-  //   const metadata = await m.parseFile('./test/fixtures/sample.mp3', {
-  //     duration: true,
-  //   });
-  //   console.dir(metadata.format, { depth: 10 });
-  // });
-
-  // it.only('See the metadata from a library to compare it v2', async () => {
-  //   console.log(mp3Parser);
-  //   const buf = fs.readFileSync('./test/fixtures/sample.mp3');
-  //   const frames = mp3Parser.readTags(buf);
-  //   console.dir(frames.length);
-  // });
-
-  // it.only('See the metadata from a library to compare it v3', async () => {
-  //   const buf = fs.readFileSync('./test/fixtures/sample.mp3');
-  //   var header = new XingHeader(buf);
-  //   console.log(header);
-  //   if (header.parsed && header.is_valid) {
-  //     console.info('Number of audio frames: ', header.xing_frames);
-  //   }
-  // });
 });
