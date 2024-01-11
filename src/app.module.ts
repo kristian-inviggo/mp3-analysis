@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { configuration } from '../config/configuration';
+import { configuration } from './config/configuration';
 import { LoggerModule } from 'nestjs-pino';
-import { HealthModule } from './health/health.module';
+import { HealthModule } from './modules/health/health.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from './modules/shared/shared.module';
 const { v4: uuidv4 } = require('uuid');
 
 @Module({

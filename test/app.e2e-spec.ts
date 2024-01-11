@@ -20,8 +20,27 @@ describe('AppController (e2e)', () => {
   });
 
   it('/health (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(200);
+    return request(app.getHttpServer()).get('/health').expect(200);
   });
 
-  describe('/file-upload', () => {});
+  describe('POST /file-upload', () => {
+    it('should return 201 CREATED and have the correct properties in the response body', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/file-upload')
+        .attach('file', './test/fixtures/sample.mp3');
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toEqual({ frameCount: 1610 });
+    });
+
+    it('should return 400 BAD REQUEST for any other file types besides mp3', async () => {
+      const fileNames: string[] = ['image.webp', 'cat.jpg', 'sample3.mp4'];
+
+      for (const fileName of fileNames) {
+        const response = await request(app.getHttpServer())
+          .post('/file-upload')
+          .attach('file', `./test/fixtures/${fileName}`);
+        expect(response.statusCode).toBe(400);
+      }
+    });
+  });
 });
