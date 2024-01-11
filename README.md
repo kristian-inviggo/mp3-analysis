@@ -54,7 +54,13 @@ Unit tests can be runned with
 $ npm run test
 ```
 
-Note: Unit tests mock the repositories so they don't require starting up a real database
+### E2E
+
+E2E tests can be runned with
+
+```bash
+$ npm run test:e2e
+```
 
 ## Swagger
 
