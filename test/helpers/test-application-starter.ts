@@ -9,8 +9,7 @@ import { INestApplication } from '@nestjs/common';
 import { instance, mock, when } from 'ts-mockito';
 import TestAgent from 'supertest/lib/agent';
 import * as path from 'path';
-import { DataSource } from 'typeorm';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { UploadsModule } from '../../src/uploads/uploads.module';
 
 dotenv.config({
   path: path.resolve(__dirname, '../../src/config/env/e2e.env'),
@@ -19,7 +18,6 @@ dotenv.config({
 export class TestApplicationStarter {
   private readonly postgresTestContainer = new PostgresTestContainer();
   private app: INestApplication;
-  private dataSource: DataSource;
 
   private getDatabaseEnvironmentVariables(): DatabaseEnvironment {
     return {
@@ -48,19 +46,7 @@ export class TestApplicationStarter {
     when(mockConfigService.get('NODE_ENV')).thenReturn('test');
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: dbConfig.host,
-          port: dbConfig.port,
-          username: dbConfig.username,
-          password: dbConfig.password,
-          database: dbConfig.name,
-          entities: [File],
-          synchronize: true,
-        }),
-        AppModule,
-      ],
+      imports: [AppModule, UploadsModule],
     })
       .overrideProvider(ConfigService)
       .useValue(instance(mockConfigService))
