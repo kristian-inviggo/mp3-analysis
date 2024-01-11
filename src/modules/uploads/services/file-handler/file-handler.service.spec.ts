@@ -41,13 +41,13 @@ describe('FileHandlerService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('validateAndGetMp3FileFrames', () => {
+  describe('getMp3FileFrameCount', () => {
     const validFile = readFile('sample.mp3');
 
     it('should verify that the save method was invoked for saving a file when there is no file with that hash in the database', async () => {
       when(mockFileRepositpory.findOneBy(anything())).thenResolve(null);
 
-      const result = await service.validateAndGetMp3FileFrames(validFile);
+      const result = await service.getMp3FileFrameCount(validFile);
 
       expect(result).toEqual(1610);
       verify(mockFileRepositpory.save(anything())).once();
@@ -59,7 +59,7 @@ describe('FileHandlerService', () => {
         frameCount: 500,
       });
 
-      const result = await service.validateAndGetMp3FileFrames(validFile);
+      const result = await service.getMp3FileFrameCount(validFile);
 
       expect(result).toEqual(500);
       verify(mockFileRepositpory.save(anything())).never();

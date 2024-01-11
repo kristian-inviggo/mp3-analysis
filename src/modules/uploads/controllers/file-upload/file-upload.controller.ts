@@ -42,7 +42,7 @@ export class FileUploadController {
     type: BadRequestResponseDto,
   })
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
+  async getMp3FileFrameCount(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
@@ -52,8 +52,9 @@ export class FileUploadController {
     )
     file: Express.Multer.File,
   ): Promise<FileUploadResponseDto> {
-    const frameCount =
-      await this.fileHandlerService.validateAndGetMp3FileFrames(file.buffer);
+    const frameCount = await this.fileHandlerService.getMp3FileFrameCount(
+      file.buffer,
+    );
     return { frameCount };
   }
 }

@@ -14,7 +14,7 @@ export class FileHandlerService {
     private filesRepository: Repository<File>,
   ) {}
 
-  async validateAndGetMp3FileFrames(buffer: Buffer): Promise<number> {
+  async getMp3FileFrameCount(buffer: Buffer): Promise<number> {
     const hash = this.hashService.hash(buffer);
     const file = await this.filesRepository.findOneBy({ id: hash });
 

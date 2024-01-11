@@ -3,6 +3,7 @@ import { FileUploadController } from './file-upload.controller';
 import { FileHandlerService } from '../../services/file-handler/file-handler.service';
 import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
 import { HashFileService } from '../../services/hash-file/hash-file.service';
+import { File } from '../../entities/file.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 import { Repository } from 'typeorm';
@@ -38,7 +39,7 @@ describe('FileUploadController', () => {
     resetCalls(mockFileRepositpory);
   });
 
-  describe('POST api/v1/file-upload', () => {
+  describe('POST file-upload', () => {
     const validFile = readFile('sample.mp3');
     const mockReadableStream = mock(Readable);
 
@@ -49,7 +50,7 @@ describe('FileUploadController', () => {
     it('should verify that the save method was invoked for saving a file when there is no file with that hash in the database', async () => {
       when(mockFileRepositpory.findOneBy(anything())).thenResolve(null);
 
-      const result = await controller.uploadFile({
+      const result = await controller.getMp3FileFrameCount({
         originalname: 'fileName.mp3',
         fieldname: 'form field name',
         mimetype: 'audio/mpeg',
@@ -73,7 +74,7 @@ describe('FileUploadController', () => {
         frameCount: 500,
       });
 
-      const result = await controller.uploadFile({
+      const result = await controller.getMp3FileFrameCount({
         originalname: 'fileName.mp3',
         fieldname: 'form field name',
         mimetype: 'audio/mpeg',
