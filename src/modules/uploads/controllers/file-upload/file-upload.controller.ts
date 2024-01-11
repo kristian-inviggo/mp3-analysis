@@ -14,7 +14,7 @@ import {
   ApiCreatedResponse,
 } from '@nestjs/swagger';
 import { FileUploadResponseDto } from '../../dtos/FileUploadResponse.dto';
-import { BadRequestResponseDto } from '../../../exceptions/dtos/BadRequestException.dto';
+import { BadRequestResponseDto } from '../../../../exceptions/dtos/BadRequestException.dto';
 
 @Controller('file-upload')
 export class FileUploadController {

@@ -3,8 +3,8 @@ import { UploadsModule } from './uploads/uploads.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { File } from './uploads/entities/file.entity';
-import { configuration } from './config/configuration';
-import { DatabaseEnvironment } from './config/interfaces/DatabaseEnvironment';
+import { configuration } from '../config/configuration';
+import { DatabaseEnvironment } from '../config/interfaces/DatabaseEnvironment';
 import { LoggerModule } from 'nestjs-pino';
 const { v4: uuidv4 } = require('uuid');
 
