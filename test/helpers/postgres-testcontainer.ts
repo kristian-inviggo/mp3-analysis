@@ -2,24 +2,26 @@ import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
 } from '@testcontainers/postgresql';
-import { File } from 'src/uploads/entities/file.entity';
+import { DatabaseEnvironment } from 'src/config/interfaces/DatabaseEnvironment';
+import { File } from '../../src/uploads/entities/file.entity';
 import { DataSource } from 'typeorm';
-import * as dotenv from 'dotenv';
-dotenv.config({ path: '../../src/config/e2e.env' });
 
 export class PostgresTestContainer {
   public container: StartedPostgreSqlContainer;
-  public port: number;
 
-  public async init(): Promise<void> {
+  get port(): number {
+    return this.container.getFirstMappedPort();
+  }
+
+  public async init(
+    dbConfig: Omit<DatabaseEnvironment, 'host'>,
+  ): Promise<void> {
     this.container = await new PostgreSqlContainer('postgres:16-alpine')
-      .withDatabase(process.env.DB_NAME!)
-      .withUsername(process.env.DB_USERNAME!)
-      .withPassword(process.env.DB_PASSWORD!)
-      .withExposedPorts(parseInt(process.env.DB_PORT!, 10!))
+      .withDatabase(dbConfig.name)
+      .withUsername(dbConfig.username)
+      .withPassword(dbConfig.password)
+      // .withExposedPorts(dbConfig.port)
       .start();
-
-    this.port = this.container.getMappedPort(5433);
   }
 
   public async sync(): Promise<void> {

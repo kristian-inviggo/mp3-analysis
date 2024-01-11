@@ -1,36 +1,19 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
-import { PostgresTestContainer } from './helpers/postgres-testcontainer';
-import { ConfigService } from '@nestjs/config';
+import { ApplicationStarter } from './helpers/application-starter';
 
 describe('FileUploadController (e2e)', () => {
-  let app: INestApplication;
-  let postgresContainer = new PostgresTestContainer();
+  const app = new ApplicationStarter();
 
-  beforeEach(async () => {
-    await postgresContainer.init();
-
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideProvider(ConfigService)
-      .useValue({})
-      .compile();
-
-    app = moduleFixture.createNestApplication();
+  beforeAll(async () => {
     await app.init();
   });
 
   afterAll(async () => {
-    await app.close();
-    await postgresContainer.stop();
+    // await app.stop();
   });
 
   describe('POST /file-upload', () => {
     it('should return 201 CREATED and have the correct properties in the response body', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await app.request
         .post('/file-upload')
         .attach('file', './test/fixtures/sample.mp3');
       expect(response.statusCode).toBe(201);
@@ -41,7 +24,7 @@ describe('FileUploadController (e2e)', () => {
       const fileNames: string[] = ['image.webp', 'cat.jpg'];
 
       for (const fileName of fileNames) {
-        const response = await request(app.getHttpServer())
+        const response = await app.request
           .post('/file-upload')
           .attach('file', `./test/fixtures/${fileName}`);
         expect(response.statusCode).toBe(400);
