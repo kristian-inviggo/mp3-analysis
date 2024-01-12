@@ -6,7 +6,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileHandlerService } from '../../services/file-handler/file-handler.service';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -17,11 +16,12 @@ import { FileUploadResponseDto } from '../../dtos/FileUploadResponse.dto';
 import { BadRequestResponseDto } from '../../../../exceptions/dtos/BadRequestException.dto';
 import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { CacheService } from '../../../shared/cache/cache.service';
+import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
 
 @Controller('file-upload')
 export class FileUploadController {
   constructor(
-    private readonly fileHandlerService: FileHandlerService,
+    private readonly mp3FrameCounterService: Mp3FrameCounterService,
     private readonly hashFileService: HashFileService,
     private readonly cacheService: CacheService,
   ) {}
@@ -65,7 +65,7 @@ export class FileUploadController {
       return { frameCount: cachedFrameCount };
     }
 
-    const frameCount = await this.fileHandlerService.getMp3FileFrameCount(
+    const frameCount = await this.mp3FrameCounterService.countFrames(
       file.buffer,
     );
 

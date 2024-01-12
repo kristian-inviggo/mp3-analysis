@@ -4,7 +4,6 @@ import { instance, mock } from 'ts-mockito';
 import { readFileSync } from 'fs';
 import { Readable } from 'stream';
 import { CacheModule } from '@nestjs/cache-manager';
-import { FileHandlerService } from '../../services/file-handler/file-handler.service';
 import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
 import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { CacheService } from '../../../shared/cache/cache.service';
@@ -20,12 +19,7 @@ describe('FileUploadController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [CacheModule.register()],
       controllers: [FileUploadController],
-      providers: [
-        FileHandlerService,
-        Mp3FrameCounterService,
-        HashFileService,
-        CacheService,
-      ],
+      providers: [Mp3FrameCounterService, HashFileService, CacheService],
     }).compile();
 
     controller = module.get<FileUploadController>(FileUploadController);
