@@ -13,6 +13,7 @@ The API exposes one endpoint `file-uploads` to return the number of frames in an
   - [Unit](#unit)
 - [Swagger](#swagger)
 - [Optimization](#optimization)
+- [Deployed app](#deployed-app)
 
 ## Installation
 
@@ -73,3 +74,11 @@ This works only in development mode
 At the moment we need to parse the whole stream before we can evaluate the file, we can optimize this with overriding the express parser that waits for the stream. Esentially as soon as the stream arrives we can check the file so we don't have to iterate over it twice after we have received it.
 
 Additionally we could also try to read the XING header which exits in SOME mp3 files. This header contains the frameCount information already so we would not have to go through the whole file.
+
+## Deployed app
+
+The app is deployed here: https://mp3-analysis-igtnabda1-kristians-projects-804adfc5.vercel.app
+Two endpoints are exposed
+
+1. File upload endpoint: https://mp3-analysis-igtnabda1-kristians-projects-804adfc5.vercel.app/file-upload
+2. Health check: https://mp3-analysis-igtnabda1-kristians-projects-804adfc5.vercel.app/health
