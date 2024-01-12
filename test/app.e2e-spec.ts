@@ -44,7 +44,12 @@ describe('AppController (e2e)', () => {
     });
 
     it('should return 400 BAD REQUEST for any other file types besides mp3', async () => {
-      const fileNames: string[] = ['image.webp', 'cat.jpg', 'sample3.mp4'];
+      const fileNames: string[] = [
+        'image.webp',
+        'cat.jpg',
+        'sample3.mp4',
+        'wrong_extenstion.mp3',
+      ];
 
       for (const fileName of fileNames) {
         const response = await request(app.getHttpServer())

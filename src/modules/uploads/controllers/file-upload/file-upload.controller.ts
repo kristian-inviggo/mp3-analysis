@@ -11,13 +11,16 @@ import {
   ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { FileUploadResponseDto } from '../../dtos/FileUploadResponse.dto';
 import { BadRequestResponseDto } from '../../../../exceptions/dtos/BadRequestException.dto';
 import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
+import { FileTypeValidator } from '../../validators/FileMimeTypeValidator';
 
+@ApiTags('file-upload')
 @Controller('file-upload')
 export class FileUploadController {
   constructor(
@@ -27,6 +30,7 @@ export class FileUploadController {
   ) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -47,13 +51,14 @@ export class FileUploadController {
     description: 'When the provided file is missing or of an invalid format',
     type: BadRequestResponseDto,
   })
-  @UseInterceptors(FileInterceptor('file'))
   async getMp3FileFrameCount(
     @UploadedFile(
       new ParseFilePipeBuilder()
-        .addFileTypeValidator({
-          fileType: 'audio/mpeg',
-        })
+        .addValidator(
+          new FileTypeValidator({
+            fileTypes: ['audio/mp3', 'audio/mpeg'],
+          }),
+        )
         .build(),
     )
     file: Express.Multer.File,

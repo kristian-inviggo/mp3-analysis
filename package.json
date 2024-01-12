@@ -32,6 +32,7 @@
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
+    "file-type-mime": "^0.3.5",
     "nestjs-pino": "^4.0.0",
     "pg": "^8.11.3",
     "pino": "^8.17.2",
