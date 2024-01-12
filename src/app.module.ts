@@ -22,7 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
           pinoHttp: {
             enabled: !!configService.get<boolean>('logging'),
             level: 'info',
-            genReqId: (request) =>
+            genReqId: (request: any) =>
               request.headers['x-correlation-id'] || uuidv4(),
           },
         };

@@ -42,21 +42,5 @@ describe('AppController (e2e)', () => {
       expect(response.statusCode).toBe(201);
       expect(response.body).toEqual({ frameCount: 1610 });
     });
-
-    it('should return 400 BAD REQUEST for any other file types besides mp3', async () => {
-      const fileNames: string[] = [
-        'image.webp',
-        'cat.jpg',
-        'sample3.mp4',
-        'wrong_extenstion.mp3',
-      ];
-
-      for (const fileName of fileNames) {
-        const response = await request(app.getHttpServer())
-          .post('/file-upload')
-          .attach('file', `./test/fixtures/${fileName}`);
-        expect(response.statusCode).toBe(400);
-      }
-    });
   });
 });

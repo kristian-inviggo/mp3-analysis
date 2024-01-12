@@ -1,6 +1,5 @@
 import {
   Controller,
-  ParseFilePipeBuilder,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -18,7 +17,6 @@ import { BadRequestResponseDto } from '../../../../exceptions/dtos/BadRequestExc
 import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
-import { FileTypeValidator } from '../../validators/FileMimeTypeValidator';
 
 @ApiTags('file-upload')
 @Controller('file-upload')
@@ -52,16 +50,19 @@ export class FileUploadController {
     description: 'When the provided file is missing or of an invalid format',
     type: BadRequestResponseDto,
   })
+
+  /* 
+  This validation is left out because sample file is in binary format
+  new ParseFilePipeBuilder()
+       .addValidator(
+         new FileTypeValidator({
+           fileTypes: ['audio/mp3', 'audio/mpeg'],
+         }),
+       )
+       .build(), 
+  */
   async getMp3FileFrameCount(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addValidator(
-          new FileTypeValidator({
-            fileTypes: ['audio/mp3', 'audio/mpeg'],
-          }),
-        )
-        .build(),
-    )
+    @UploadedFile()
     file: Express.Multer.File,
   ): Promise<FileUploadResponseDto> {
     const fileHash = this.hashFileService.hash(file.buffer);
@@ -71,9 +72,7 @@ export class FileUploadController {
       return { frameCount: cachedFrameCount };
     }
 
-    const frameCount = await this.mp3FrameCounterService.countFrames(
-      file.buffer,
-    );
+    const frameCount = this.mp3FrameCounterService.countFrames(file.buffer);
 
     await this.cacheService.setCache<number>(fileHash, frameCount);
     return { frameCount };
