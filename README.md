@@ -67,7 +67,7 @@ $ npm run test:e2e
 ## Swagger
 
 Swagger can be accessed through `/docs` to view the API documentation.
-[Swagger link](https://mp3-analysis-8rpe7o2zu-kristians-projects-804adfc5.vercel.app/docs)
+[Swagger link](https://mp3-analysis-ot41mvurl-kristians-projects-804adfc5.vercel.app/docs)
 
 ## Optimization
 
@@ -77,8 +77,8 @@ Additionally we could also try to read the XING header which exits in SOME mp3 f
 
 ## Deployed app
 
-The app is deployed here: https://mp3-analysis-8rpe7o2zu-kristians-projects-804adfc5.vercel.app
+The app is deployed here: https://mp3-analysis-ot41mvurl-kristians-projects-804adfc5.vercel.app/
 Two endpoints are exposed
 
-1. File upload endpoint: https://mp3-analysis-8rpe7o2zu-kristians-projects-804adfc5.vercel.app/file-upload
-2. Health check: https://mp3-analysis-8rpe7o2zu-kristians-projects-804adfc5.vercel.app/health
+1. File upload endpoint: https://mp3-analysis-ot41mvurl-kristians-projects-804adfc5.vercel.app/file-upload
+2. Health check: https://mp3-analysis-ot41mvurl-kristians-projects-804adfc5.vercel.app/health
