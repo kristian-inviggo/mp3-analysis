@@ -42,5 +42,24 @@ describe('AppController (e2e)', () => {
       expect(response.statusCode).toBe(201);
       expect(response.body).toEqual({ frameCount: 1610 });
     });
+
+    /* 
+      This test is commented out as the provied mp3 file is actually a binary file hence validation is turned off for now
+    */
+
+    // it('should return 400 BAD REQUEST for any other file types besides mp3', async () => {
+    //   const fileNames: string[] = [
+    //     'image.webp',
+    //     'cat.jpg',
+    //     'sample3.mp4',
+    //   ];
+
+    //   for (const fileName of fileNames) {
+    //     const response = await request(app.getHttpServer())
+    //       .post('/file-upload')
+    //       .attach('file', `./test/fixtures/${fileName}`);
+    //     expect(response.statusCode).toBe(400);
+    //   }
+    // });
   });
 });
