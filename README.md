@@ -71,3 +71,5 @@ This works only in development mode
 ## Optimization
 
 At the moment we need to parse the whole stream before we can evaluate the file, we can optimize this with overriding the express parser that waits for the stream. Esentially as soon as the stream arrives we can check the file so we don't have to iterate over it twice after we have received it.
+
+Additionally we could also try to read the XING header which exits in SOME mp3 files. This header contains the frameCount information already so we would not have to go through the whole file.
