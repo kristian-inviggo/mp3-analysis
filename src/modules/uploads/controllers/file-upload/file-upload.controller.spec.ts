@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FileUploadController } from './file-upload.controller';
-import { FileHandlerService } from '../../services/file-handler/file-handler.service';
-import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
-import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { instance, mock } from 'ts-mockito';
 import { readFileSync } from 'fs';
 import { Readable } from 'stream';
-import { CacheService } from '../../../shared/cache/cache.service';
 import { CacheModule } from '@nestjs/cache-manager';
+import { FileHandlerService } from '../../services/file-handler/file-handler.service';
+import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
+import { HashFileService } from '../../services/hash-file/hash-file.service';
+import { CacheService } from '../../../shared/cache/cache.service';
 
 function readFile(fileName: string): Buffer {
   return readFileSync(`test/fixtures/${fileName}`);
