@@ -6,9 +6,7 @@ import { Logger } from 'nestjs-pino';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
 
-  if (process.env.NODE_ENV !== 'production') {
-    swaggerInitializer(app);
-  }
+  swaggerInitializer(app);
 
   app.useLogger(app.get(Logger));
   await app.listen(3000);
