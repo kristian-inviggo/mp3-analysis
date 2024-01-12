@@ -6,7 +6,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './modules/health/health.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { SharedModule } from './modules/shared/shared.module';
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 @Module({
   imports: [

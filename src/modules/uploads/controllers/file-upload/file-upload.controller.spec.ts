@@ -8,7 +8,6 @@ import { readFileSync } from 'fs';
 import { Readable } from 'stream';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { CacheModule } from '@nestjs/cache-manager';
-import { UploadsModule } from '../../uploads.module';
 
 function readFile(fileName: string): Buffer {
   return readFileSync(`test/fixtures/${fileName}`);

@@ -3,15 +3,7 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 import { instance, mock, when } from 'ts-mockito';
-import { UploadsModule } from '../src/modules/uploads/uploads.module';
 import { ConfigService } from '@nestjs/config';
-import { CacheModule } from '@nestjs/cache-manager';
-import { SharedModule } from '../src/modules/shared/shared.module';
-import { CacheService } from '../src/modules/shared/cache/cache.service';
-import { HashFileService } from '../src/modules/uploads/services/hash-file/hash-file.service';
-import { Mp3FrameCounterService } from '../src/modules/uploads/services/mp3-frame-counter/mp3-frame-counter.service';
-import { FileHandlerService } from '../src/modules/uploads/services/file-handler/file-handler.service';
-import { HealthModule } from '../src/modules/health/health.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -36,7 +28,7 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  describe('GET /healt', () => {
+  describe('GET /health', () => {
     it('should return 200 OK', () => {
       return request(app.getHttpServer()).get('/health').expect(200);
     });
