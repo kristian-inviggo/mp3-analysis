@@ -37,8 +37,9 @@ export class FileUploadController {
       type: 'object',
       properties: {
         file: {
-          type: 'audio/mpeg',
+          type: 'string',
           format: 'binary',
+          description: 'only mp3 files are allowed',
         },
       },
     },
