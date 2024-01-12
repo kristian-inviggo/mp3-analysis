@@ -1,11 +1,11 @@
 import { Mp3FrameHeaderService } from '../mp3-frame-header/mp3-frame-header.service';
 
-const bitRatesForMp3Version1Layer3 = [
+const BITRATES_FOR_MP3_VERSION1_LAYER3 = [
   0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0,
 ] as const;
 
-const sampleRateForMp3Version1Layer3 = 44.1;
-const bitsPerSampleForMp3Version1Layer3 = 144;
+const SAMPLE_RATE_FOR_MP3_VERSION1_LAYER3 = 44.1;
+const BITS_PER_SAMPLE_FOR_MP3_VERSION1_LAYER3 = 144;
 
 export class Mp3FrameHeaderCalculatorService extends Mp3FrameHeaderService {
   constructor(header: Buffer) {
@@ -13,7 +13,7 @@ export class Mp3FrameHeaderCalculatorService extends Mp3FrameHeaderService {
   }
 
   private get bitrate(): number {
-    return bitRatesForMp3Version1Layer3[this.bitrateBits];
+    return BITRATES_FOR_MP3_VERSION1_LAYER3[this.bitrateBits];
   }
 
   /**
@@ -24,8 +24,8 @@ export class Mp3FrameHeaderCalculatorService extends Mp3FrameHeaderService {
 
   public calculateFrameSize(): number {
     return Math.floor(
-      (bitsPerSampleForMp3Version1Layer3 * this.bitrate) /
-        sampleRateForMp3Version1Layer3 +
+      (BITS_PER_SAMPLE_FOR_MP3_VERSION1_LAYER3 * this.bitrate) /
+        SAMPLE_RATE_FOR_MP3_VERSION1_LAYER3 +
         this.paddingBit,
     );
   }

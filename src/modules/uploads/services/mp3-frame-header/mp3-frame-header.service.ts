@@ -1,28 +1,28 @@
-const syncBitsMask = 0xffe00000;
-const versionBitsMask = 0x00180000;
-const layerBitsMask = 0x00060000;
-const bitrateBitsMask = 0x0000f000;
-const samplingRateBitsMask = 0x00000c00;
-const channelModeBitsMask = 0x000000c0;
-const emphasisBitsMask = 0x00000003;
-const paddingBitMask = 0x00000200;
+const SYNC_BITS_MASK = 0xffe00000;
+const VERSION_BITS_MASK = 0x00180000;
+const LAYER_BITS_MASK = 0x00060000;
+const BITRATE_BITS_MASK = 0x0000f000;
+const SAMPLING_RATE_BITS_MASK = 0x00000c00;
+const CHANNEL_MODE_BITS_MASK = 0x000000c0;
+const EMPHASIS_BITS_MASK = 0x00000003;
+const PADDING_BIT_MASK = 0x00000200;
 
-const syncBitsOffset = 21;
-const versionBitsOffset = 19;
-const layerBitsOffset = 17;
-const bitRateBitsOffset = 12;
-const sampleRateBitsOffset = 10;
-const paddingBitOffset = 9;
-const channelModeBitsOffset = 6;
+const SYNC_BITS_OFFSET = 21;
+const VERSION_BITS_OFFSET = 19;
+const LAYER_BITS_OFFSET = 17;
+const BITRATE_BITS_OFFSET = 12;
+const SAMPLE_RATE_BITS_OFFSET = 10;
+const PADDING_BIT_OFFSET = 9;
+const CHANNEL_MODE_BITS_OFFSET = 6;
 
-const validSyncBitsValue = 0x7ff;
-const validVersionBits = 0b11;
-const validLayerBits = 0b01;
-const bitrateMaxValue = 0b1111;
-const bitrateMinValue = 0b0000;
-const samplingRateBitsValidValues = [0b00, 0b01, 0b10];
-const validChannelModeBits = [0b00, 0b01, 0b10, 0b11];
-const validEmphasisBits = [0b00, 0b01, 0b10, 0b11];
+const VALID_SYNC_BITS_VALUE = 0x7ff;
+const VALID_VERSION_BITS = 0b11;
+const VALID_LAYER_BITS = 0b01;
+const BITRATE_MAX_VALUE = 0b1111;
+const BITRATE_MIN_VALUE = 0b0000;
+const VALID_SAMPLING_RATE_BITS = [0b00, 0b01, 0b10];
+const VALID_CHANNEL_MODE_BITS = [0b00, 0b01, 0b10, 0b11];
+const VALID_EMPHASIS_BITS = [0b00, 0b01, 0b10, 0b11];
 
 export class Mp3FrameHeaderService {
   private readonly header: number;
@@ -32,35 +32,35 @@ export class Mp3FrameHeaderService {
   }
 
   protected get syncBits(): number {
-    return (this.header & syncBitsMask) >>> syncBitsOffset;
+    return (this.header & SYNC_BITS_MASK) >>> SYNC_BITS_OFFSET;
   }
 
   protected get bitrateBits(): number {
-    return (this.header & bitrateBitsMask) >>> bitRateBitsOffset;
+    return (this.header & BITRATE_BITS_MASK) >>> BITRATE_BITS_OFFSET;
   }
 
   protected get samplingRateBits(): number {
-    return (this.header & samplingRateBitsMask) >>> sampleRateBitsOffset;
+    return (this.header & SAMPLING_RATE_BITS_MASK) >>> SAMPLE_RATE_BITS_OFFSET;
   }
 
   protected get channelModeBits(): number {
-    return (this.header & channelModeBitsMask) >>> channelModeBitsOffset;
+    return (this.header & CHANNEL_MODE_BITS_MASK) >>> CHANNEL_MODE_BITS_OFFSET;
   }
 
   protected get emphasisBits(): number {
-    return this.header & emphasisBitsMask;
+    return this.header & EMPHASIS_BITS_MASK;
   }
 
   protected get versionBits(): number {
-    return (this.header & versionBitsMask) >>> versionBitsOffset;
+    return (this.header & VERSION_BITS_MASK) >>> VERSION_BITS_OFFSET;
   }
 
   protected get layerBits(): number {
-    return (this.header & layerBitsMask) >>> layerBitsOffset;
+    return (this.header & LAYER_BITS_MASK) >>> LAYER_BITS_OFFSET;
   }
 
   protected get paddingBit(): number {
-    return (this.header & paddingBitMask) >>> paddingBitOffset;
+    return (this.header & PADDING_BIT_MASK) >>> PADDING_BIT_OFFSET;
   }
 
   /**
@@ -70,7 +70,8 @@ export class Mp3FrameHeaderService {
    */
   private isFileMp3Version1Layer3(): boolean {
     return (
-      this.versionBits === validVersionBits && this.layerBits === validLayerBits
+      this.versionBits === VALID_VERSION_BITS &&
+      this.layerBits === VALID_LAYER_BITS
     );
   }
 
@@ -83,7 +84,7 @@ export class Mp3FrameHeaderService {
    */
   public isPotentialHeader(): boolean {
     return (
-      this.syncBits === validSyncBitsValue && this.isFileMp3Version1Layer3()
+      this.syncBits === VALID_SYNC_BITS_VALUE && this.isFileMp3Version1Layer3()
     );
   }
 
@@ -95,7 +96,7 @@ export class Mp3FrameHeaderService {
    * @returns {Boolean} returns true if this is a valid mp3 frame header
    */
   public isValidMP3FrameHeader(): boolean {
-    if (this.syncBits !== validSyncBitsValue) {
+    if (this.syncBits !== VALID_SYNC_BITS_VALUE) {
       return false;
     }
 
@@ -104,22 +105,25 @@ export class Mp3FrameHeaderService {
     }
 
     const bitrateBits = this.bitrateBits;
-    if (bitrateBits === bitrateMaxValue || bitrateBits === bitrateMinValue) {
+    if (
+      bitrateBits === BITRATE_MAX_VALUE ||
+      bitrateBits === BITRATE_MIN_VALUE
+    ) {
       return false;
     }
 
     const sampleRateBits = this.samplingRateBits;
-    if (!samplingRateBitsValidValues.includes(sampleRateBits)) {
+    if (!VALID_SAMPLING_RATE_BITS.includes(sampleRateBits)) {
       return false;
     }
 
     const channelModeBits = this.channelModeBits;
-    if (!validChannelModeBits.includes(channelModeBits)) {
+    if (!VALID_CHANNEL_MODE_BITS.includes(channelModeBits)) {
       return false;
     }
 
     const emphasisBits = this.emphasisBits;
-    if (!validEmphasisBits.includes(emphasisBits)) {
+    if (!VALID_EMPHASIS_BITS.includes(emphasisBits)) {
       return false;
     }
 
