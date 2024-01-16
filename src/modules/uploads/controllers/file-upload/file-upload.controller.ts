@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { BadRequestResponseDto } from '../../../../exceptions/dtos/BadRequestExc
 import { HashFileService } from '../../services/hash-file/hash-file.service';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { Mp3FrameCounterService } from '../../services/mp3-frame-counter/mp3-frame-counter.service';
+import { Request } from 'express';
 
 @ApiTags('file-upload')
 @Controller('file-upload')
@@ -76,5 +78,29 @@ export class FileUploadController {
 
     await this.cacheService.setCache<number>(fileHash, frameCount);
     return { frameCount };
+  }
+
+  @Post('optimized')
+  async optimiziedUpload(@Req() req: Request) {
+    const count = new Promise<number>((resolve) => {
+      let resultNumber = 0;
+      let skipXBytes = 0;
+
+      req.on('data', (chunk: Buffer) => {
+        const result = this.mp3FrameCounterService.countFramesOptimizied(
+          chunk,
+          skipXBytes,
+        );
+
+        resultNumber += result.frameCount;
+        skipXBytes = result.skipBytes;
+      });
+
+      req.on('end', () => {
+        resolve(resultNumber);
+      });
+    });
+
+    return await count;
   }
 }
