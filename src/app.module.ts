@@ -11,7 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
+      envFilePath: `${process.cwd()}/src/config/env/${
+        process.env.NODE_ENV
+      }.env`,
       load: [configuration],
       isGlobal: true,
     }),

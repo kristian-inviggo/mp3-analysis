@@ -13,6 +13,6 @@ export const configuration = (): Environment => {
 
   return {
     NODE_ENV: nodeEnv,
-    logging: !!process.env.LOGGING,
+    logging: !!process.env.LOGGER,
   };
 };
